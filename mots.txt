@@ -20,22 +20,6 @@ mecanique
 cinematographie
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 pomme
 pomme
 pomme
@@ -92,3 +76,7 @@ pomme
 
 poo
 pomme
+pomme
+
+pomme
+

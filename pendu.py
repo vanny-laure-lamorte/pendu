@@ -2,7 +2,7 @@
 # Importer des modules #
 #----------------------#
 
-import pygame, random, sys
+import pygame, random
 pygame.init()
 
 #-------------------------------#
@@ -52,12 +52,6 @@ def ecran_jeu():
     global limbs
     ecran.fill(white)
 
-# Buttons
-    for i in range(len(buttons)):
-        if buttons[i][4]:          
-            label = btn_font.render(chr(buttons[i][5]), 1, dark_grey)
-            ecran.blit(label, (buttons[i][1] - (label.get_width() / 2), buttons[i][2] - (label.get_height() / 2)))
-
     spaced = spacedOut(word, deviner)
     label1 = guess_font.render(spaced, 1, black)
     rect = label1.get_rect()
@@ -69,6 +63,13 @@ def ecran_jeu():
     ecran.blit(images, (L/2 - images.get_width()/2 + 20, 150))
 
     lettres_choisies(deviner) 
+
+    # Buttons
+    for i in range(len(buttons)):
+        if buttons[i][4]:          
+            label = btn_font.render(chr(buttons[i][5]), 1, dark_grey)
+            ecran.blit(label, (buttons[i][1] - (label.get_width() / 2), buttons[i][2] - (label.get_height() / 2)))
+            
     pygame.display.update()
 
 # Choisir aléatoirement un mot à deviner dans un fichier "mots"
@@ -92,17 +93,12 @@ def hang(guess):
 
 def spacedOut(word, deviner=[]):
     spacedWord = ''
-    guessedLetters = deviner
-    for x in range(len(word)):
-        if word[x] != ' ':
+    for char in word:
+        if char.upper() in deviner or char == ' ':
+            spacedWord += char.upper() + ' '
+        else:
             spacedWord += '_ '
-            for i in range(len(guessedLetters)):
-                if word[x].upper() == guessedLetters[i]:
-                    spacedWord = spacedWord[:-2]
-                    spacedWord += word[x].upper() + ' '
-        elif word[x] == ' ':
-            spacedWord += ' '
-    return spacedWord          
+    return spacedWord         
 
 # Vérifier si un bouton a été cliqué
 def buttonHit(x, y):
@@ -215,7 +211,7 @@ def game_pendu ():
 def lettres_choisies(deviner):
     guessed_letters_text = 'Lettres déja proposées : ' + ', '.join(deviner)
     guessed_text =  btn_font.render(guessed_letters_text, True, dark_grey)
-    ecran.blit(guessed_text, (20, H-35))
+    ecran.blit(guessed_text, (20, H-30))
 
 #---------------------------#
 # Jeu 2/2: Insérer des mots #
@@ -232,7 +228,7 @@ def game_mot_deviner():
             if event.type == pygame.QUIT:
                 ajout_termine = True 
                 main_menu() 
-                break                
+                break
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     ajout_termine = True
@@ -244,7 +240,7 @@ def game_mot_deviner():
         ecran.fill(blue) 
         title_font = pygame.font.Font(None, 50)
         pygame.draw.rect(ecran, grey, (0, 0, L, 100))
-        afficher_texte = title_font.render("INSERER UNMOT À DEVINER", True, gris)
+        afficher_texte = title_font.render("INSERER UN MOT À DEVINER", True, gris)
         ecran.blit(afficher_texte, (L // 2 - afficher_texte.get_width() // 2, H // 2 - 225), )        
         
         afficher_new_mot = police_menu.render(new_mot, True, white)
