@@ -2,7 +2,7 @@
 # Importer des modules #
 #----------------------#
 
-import pygame, random
+import pygame, random, sys
 pygame.init()
 
 #-------------------------------#
@@ -294,6 +294,8 @@ def main_menu():
             if event.type == pygame.QUIT:
                 in_menu = False
                 inPlay = False
+                pygame.quit()
+                sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 x, y = mouse_pos
