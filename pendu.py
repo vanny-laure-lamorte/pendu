@@ -283,7 +283,12 @@ def display_menu():
     for index, option in enumerate(options):
         text = police_menu.render(option, True, white)
         text_rect = text.get_rect(center=(L // 2, 250 + index * option_spacing))
+<<<<<<< HEAD
         ecran.blit(text, text_rect)      
+=======
+        ecran.blit(text, text_rect)       
+
+>>>>>>> 1ade4bfe06efd18d1a2801cc59c7d2675efeadfb
     pygame.display.flip()
 
 def main_menu():

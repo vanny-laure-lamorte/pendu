@@ -17,4 +17,5 @@ divertissement
 geographie
 superstition
 mecanique
-cinematographie
+cinematographiepomme
+pomme
