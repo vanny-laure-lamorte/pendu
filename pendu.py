@@ -279,7 +279,7 @@ def display_menu():
     for index, option in enumerate(options):
         text = option_font.render(option, True, white)
         text_rect = text.get_rect(center=(L // 2, 250 + index * option_spacing))
-        ecran.blit(text, text_rect)
+        ecran.blit(text, text_rect)       
 
     pygame.display.flip()
 
