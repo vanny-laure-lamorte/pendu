@@ -2,7 +2,7 @@
 # Importer des modules #
 #----------------------#
 
-import pygame, random
+import pygame, random, sys
 pygame.init()
 
 #-------------------------------#
@@ -26,13 +26,11 @@ dark_grey = (92,93,94)
 gris = (52,53,65)
 
 # Police 
-police = pygame.font.Font(None, 36)
-police_menu = pygame.font.Font(None, 50)
-police_option = pygame.font.Font(None, 21)
 
-btn_font = pygame.font.SysFont("arial", 20)
-guess_font = pygame.font.SysFont("monospace", 24)
-lost_font = pygame.font.SysFont('arial', 45)
+police_titre = pygame.font.SysFont("gabriola", 50)
+police_menu= pygame.font.SysFont("microsoftnewtailue", 35)
+police_text = pygame.font.SysFont('arial', 20)
+police_lost_win = pygame.font.SysFont('arial', 45)
 
 word = ''
 buttons = []
@@ -41,6 +39,9 @@ limbs = 0
 
 # Importer des images pour le jeu du pendu
 pendu_images = [pygame.image.load('images/pendu7.jpg'), pygame.image.load('images/pendu6.jpg'), pygame.image.load('images/pendu5.jpg'), pygame.image.load('images/pendu4.jpg'), pygame.image.load('images/pendu3.jpg'), pygame.image.load('images/pendu2.jpg'), pygame.image.load('images/pendu1.jpg')]
+
+pendu_images_menu = [pygame.image.load('images/image_accueil.png')]
+
 
 #---------------------------#
 # Les fonctions principales #
@@ -53,7 +54,7 @@ def ecran_jeu():
     ecran.fill(white)
 
     spaced = spacedOut(word, deviner)
-    label1 = guess_font.render(spaced, 1, black)
+    label1 = police_text.render(spaced, 1, black)
     rect = label1.get_rect()
     length = rect[2]
     
@@ -67,7 +68,7 @@ def ecran_jeu():
     # Buttons
     for i in range(len(buttons)):
         if buttons[i][4]:          
-            label = btn_font.render(chr(buttons[i][5]), 1, dark_grey)
+            label = police_text.render(chr(buttons[i][5]), 1, dark_grey)
             ecran.blit(label, (buttons[i][1] - (label.get_width() / 2), buttons[i][2] - (label.get_height() / 2)))
             
     pygame.display.update()
@@ -118,12 +119,12 @@ def end(winner=False):
     ecran.fill(white)
 
     if winner == True:
-        label = lost_font.render(winTxt, 1, green)
+        label = police_lost_win.render(winTxt, 1, green)
     else:
-        label = lost_font.render(lostTxt, 1, red)
+        label = police_lost_win.render(lostTxt, 1, red)
 
-    wordTxt = lost_font.render(word.upper(), 1, dark_grey)
-    wordWas = lost_font.render("Voici le à deviner: ", 1, dark_grey)
+    wordTxt = police_lost_win.render(word.upper(), 1, dark_grey)
+    wordWas = police_lost_win.render("Voici le à deviner: ", 1, dark_grey)
 
     ecran.blit(wordTxt, (L/2 - wordTxt.get_width()/2, 295))
     ecran.blit(wordWas, (L/2 - wordWas.get_width()/2, 245))
@@ -210,7 +211,7 @@ def game_pendu ():
 
 def lettres_choisies(deviner):
     guessed_letters_text = 'Lettres déja proposées : ' + ', '.join(deviner)
-    guessed_text =  btn_font.render(guessed_letters_text, True, dark_grey)
+    guessed_text = police_text.render(guessed_letters_text, True, dark_grey)
     ecran.blit(guessed_text, (20, H-30))
 
 #---------------------------#
@@ -240,14 +241,20 @@ def game_mot_deviner():
         ecran.fill(blue) 
         title_font = pygame.font.Font(None, 50)
         pygame.draw.rect(ecran, grey, (0, 0, L, 100))
-        afficher_texte = title_font.render("INSERER UN MOT À DEVINER", True, gris)
-        ecran.blit(afficher_texte, (L // 2 - afficher_texte.get_width() // 2, H // 2 - 225), )        
+        afficher_texte = police_titre.render("INSERER UN MOT À DEVINER", True, gris)
+        ecran.blit(afficher_texte, (L // 2 - afficher_texte.get_width() // 2, H // 2 - 225), )              
         
         afficher_new_mot = police_menu.render(new_mot, True, white)
         text_x = L // 2 - afficher_new_mot.get_width() // 2
         text_y = H // 2 - afficher_new_mot.get_height() // 2       
-
         ecran.blit(afficher_new_mot, (text_x, text_y))
+
+        rectangle = pygame.Rect(105, 210, 510, 90)
+        border_thickness = 3
+        x = L // 2 + 100 
+        y = H // 2 + 135 
+        pygame.draw.rect(ecran, white, rectangle, border_thickness, x, y)   
+
         pygame.display.flip()
         
     with open("mots.txt", 'a') as fichier:
@@ -259,10 +266,8 @@ def game_mot_deviner():
 # Menu principal #
 #----------------#
 
-def display_menu():
-    
-    title_font = pygame.font.Font(None, 60)
-    title_text = title_font.render('JEU DU PENDU', True, gris)
+def display_menu(): 
+    title_text = police_titre.render('JEU DU PENDU', True, gris)
     title_rect = title_text.get_rect(center=(L // 2, 50))
 
     text_background1 = pygame.Rect(0, 0, L, 90)  
@@ -271,21 +276,18 @@ def display_menu():
     text_background2 = pygame.Rect(0, text_background1.height, L, hauteur_restante)  
     pygame.draw.rect(ecran, blue, text_background2)   
     ecran.blit(title_text, title_rect)
-
+        
 # Affichage des options de menu
-    options = ['Jouer au pendu', 'Insérer un mot à deviner']
-    option_font = pygame.font.Font(None, 36)
+    options = ['1. Jouer au pendu', '2. Insérer un mot à deviner']    
     option_spacing = 70
     for index, option in enumerate(options):
-        text = option_font.render(option, True, white)
+        text = police_menu.render(option, True, white)
         text_rect = text.get_rect(center=(L // 2, 250 + index * option_spacing))
-        ecran.blit(text, text_rect)
-
+        ecran.blit(text, text_rect)      
     pygame.display.flip()
 
 def main_menu():
-    global inPlay
-    
+    global inPlay    
     display_menu()
     
     in_menu = True
@@ -294,6 +296,8 @@ def main_menu():
             if event.type == pygame.QUIT:
                 in_menu = False
                 inPlay = False
+                pygame.quit()
+                sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 x, y = mouse_pos
