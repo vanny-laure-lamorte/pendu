@@ -26,7 +26,6 @@ dark_grey = (92,93,94)
 gris = (52,53,65)
 
 # Police 
-
 police_titre = pygame.font.SysFont("gabriola", 50)
 police_menu= pygame.font.SysFont("microsoftnewtailue", 35)
 police_text = pygame.font.SysFont('arial', 20)
@@ -42,7 +41,6 @@ pendu_images = [pygame.image.load('images/pendu7.jpg'), pygame.image.load('image
 
 pendu_images_menu = [pygame.image.load('images/image_accueil.png')]
 
-
 #---------------------------#
 # Les fonctions principales #
 #---------------------------#
@@ -53,7 +51,7 @@ def ecran_jeu():
     global limbs
     ecran.fill(white)
 
-    spaced = spacedOut(word, deviner)
+    spaced = espace(word, deviner)
     label1 = police_text.render(spaced, 1, black)
     rect = label1.get_rect()
     length = rect[2]
@@ -73,8 +71,7 @@ def ecran_jeu():
             
     pygame.display.update()
 
-# Choisir aléatoirement un mot à deviner dans un fichier "mots"
-
+# Choisir aléatoirement un mot à deviner dans un fichier txt
 def mot_random():
     fichier = open("mots.txt")
     f = fichier.readlines()
@@ -82,7 +79,6 @@ def mot_random():
     return f[i][:-1]
 
 # Vérifier si la lettre proposée n'est pas déja dans le mot à deviner
-
 def hang(guess):
     global word
     if guess.lower() not in word.lower():
@@ -91,8 +87,7 @@ def hang(guess):
         return False
     
 # Renvoyer partiellement le mot à deviner avec les lettres déjà selectionnées
-
-def spacedOut(word, deviner=[]):
+def espace(word, deviner=[]):
     spacedWord = ''
     for char in word:
         if char.upper() in deviner or char == ' ':
@@ -206,7 +201,7 @@ def game_pendu ():
                             else:
                                 end()
                         else:
-                            if spacedOut(word, deviner).count('_') == 0:
+                            if espace(word, deviner).count('_') == 0:
                                 end(True)   
 
 def lettres_choisies(deviner):
